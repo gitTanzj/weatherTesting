@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Search.css';
 
-export const Search = ({ selected, setSelected }) => {
+export const Search = ({ onSelectItem }) => {
 
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -24,10 +24,6 @@ export const Search = ({ selected, setSelected }) => {
   const inputChangeHandler = (event) => {
     setQuery(event.target.value);
   };
-
-  const onSelectItem = (city) => {
-    setSelected([city, ...selected]);
-  }
 
   const onSelect = (city) => {
     onSelectItem(city);

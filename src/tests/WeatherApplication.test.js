@@ -1,7 +1,16 @@
 import { render, screen, waitFor, act, within } from '@testing-library/react';
-import App from './App';
-import { createMockServer } from './createMockServer';
+import App from '../App';
+import { createMockServer } from '../mock/createMockServer';
 import userEvent from '@testing-library/user-event';
+import { WeatherCard } from '../components/WeatherCard';
+
+let server;
+beforeEach(() => {
+  server = createMockServer()
+})
+afterEach(() => {
+  server.shutdown();
+})
 
 describe('Weather application tests', () => { 
   let server;
@@ -60,6 +69,56 @@ describe('Weather application tests', () => {
     expect(within(screen.getByTestId('my-weather-list')).getByText(/Melbourne/i)).toBeInTheDocument();
 
     expect(screen.queryByTestId('search-results')).not.toBeInTheDocument();
+  })
+})
+
+describe('WeatherCard component tests', () => {
+  it('renders city name', () => {
+    const city = {
+      name: 'Melbourne',
+      country: 'Australia',
+      state: 'Victoria',
+      lat: 0,
+      lon: 0
+    }
+    render(<WeatherCard city={city}/>);
+    expect(screen.getByText(city.name)).toBeInTheDocument();
+  });
+  
+  it('renders temperature', async () => {
+    const city = {
+      name: 'Melbourne',
+      country: 'Australia',
+      state: 'Victoria',
+      lat: 0,
+      lon: 0
+    }
+    render(<WeatherCard city={city}/>);
+    await waitFor(() => expect(screen.getByText(15.73)).toBeInTheDocument());
+  })
+
+  it('renders placeholder when temperature is not available', () => {
+    const city = {
+      name: 'Melbourne',
+      country: 'Australia',
+      state: 'Victoria',
+      lat: 0,
+      lon: 0
+    }
+    render(<WeatherCard city={city}/>);
+    expect(screen.getByText('-/-')).toBeInTheDocument();
+  })
+
+  it('renders weather information', async () => {
+    const city = {
+      name: 'Melbourne',
+      country: 'Australia',
+      state: 'Victoria',
+      lat: 0,
+      lon: 0
+    }
+    render(<WeatherCard city={city}/>);
+    await waitFor(() => expect(screen.getByText('Clouds')).toBeInTheDocument());
   })
 })
 
