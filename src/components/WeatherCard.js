@@ -21,8 +21,8 @@ export const WeatherCard = ({ city }) => {
   return (
     <div className={`weather-container ${weather && weather.main.toLowerCase()}`}>
         <h3>{city.name}</h3>
-        <p>{weather ? weather.temperature : '-/-'}</p>
-        <p>{weather && weather.main}</p>
+        <p data-testid="temperature" className="temperature">{weather ? weather.temperature : '-/-'}</p>
+        <p data-testid="weather-category" className="weather-category">{weather && weather.main}</p>
     </div>
   )
 }
